@@ -684,6 +684,16 @@ function creerSectionIdentite(S, CV, onChange, onAnnuaireModifie, rafraichirCoor
   conteneur.className = "champs-identite";
   const I = CV.identite;
 
+  // Une coordonnée fixe qui vient de passer de vide à remplie n'a jamais pu
+  // être cochée (elle n'existait pas encore dans la liste « Coordonnées ») :
+  // on la coche donc automatiquement, sinon elle réapparaît décochée et rien
+  // ne change sur le CV tant qu'on ne va pas la cocher à la main.
+  const cocherAutomatiquement = id => {
+    if (!coordonneeFixeVide(CV, id) && !(S.contact || []).includes(id)) {
+      S.contact = [...(S.contact || []), id];
+    }
+  };
+
   const champ = (placeholder, cle, type = "text", affecteCoordonnees = false) => {
     const input = document.createElement("input");
     input.type = type;
@@ -692,7 +702,11 @@ function creerSectionIdentite(S, CV, onChange, onAnnuaireModifie, rafraichirCoor
     input.oninput = () => { I[cle] = input.value; onChange(); };
     input.addEventListener("change", () => {
       onAnnuaireModifie();
-      if (affecteCoordonnees) rafraichirCoordonnees();
+      if (affecteCoordonnees) {
+        cocherAutomatiquement(cle);
+        onChange();
+        rafraichirCoordonnees();
+      }
     });
     return input;
   };
@@ -715,7 +729,12 @@ function creerSectionIdentite(S, CV, onChange, onAnnuaireModifie, rafraichirCoor
   const permisEn = document.createElement("input");
   permisEn.type = "text"; permisEn.placeholder = "Permis (anglais, optionnel)"; permisEn.value = permisInit.en;
   const surSaisiePermis = () => { I.permis = valeurTexteBilingue(permisFr.value, permisEn.value); onChange(); };
-  const surValidationPermis = () => { onAnnuaireModifie(); rafraichirCoordonnees(); };
+  const surValidationPermis = () => {
+    onAnnuaireModifie();
+    cocherAutomatiquement("permis");
+    onChange();
+    rafraichirCoordonnees();
+  };
   permisFr.oninput = surSaisiePermis;
   permisEn.oninput = surSaisiePermis;
   permisFr.addEventListener("change", surValidationPermis);
