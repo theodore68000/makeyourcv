@@ -1,0 +1,5 @@
+# Uniquement nécessaire pour la génération automatique du PDF des candidatures
+# (étape 4, optionnelle). Après installation, télécharger le navigateur :
+#   pip install -r requirements.txt
+#   playwright install chromium
+playwright

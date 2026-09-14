@@ -1,0 +1,108 @@
+{
+  "identite": {
+    "prenom": "",
+    "nom": "",
+    "photo": "data/photo.png",
+    "ville": "",
+    "telephone": "",
+    "email": "",
+    "linkedin": "",
+    "linkedinUrl": "",
+    "permis": "",
+    "coordonneesPersonnalisees": []
+  },
+  "titres": [
+    {
+      "id": "titre-exemple-1",
+      "fr": "Élève ingénieur",
+      "en": "Engineering student"
+    },
+    {
+      "id": "titre-exemple-2",
+      "fr": "À la recherche d'un stage",
+      "en": "Looking for an internship"
+    }
+  ],
+  "formations": [
+    {
+      "id": "exemple-formation",
+      "ecole": "École d'Exemple",
+      "lieu": "Ville Exemple",
+      "dates": "2023 – 2026",
+      "diplome": {
+        "fr": "Diplôme d'exemple",
+        "en": "Example degree"
+      },
+      "puces": [
+        {
+          "id": "exemple-puce-formation",
+          "fr": "Exemple de compétence acquise pendant cette formation",
+          "en": "Example of a skill acquired during this programme"
+        }
+      ]
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exemple-experience",
+      "organisation": "Entreprise d'Exemple",
+      "lieu": "Ville Exemple",
+      "dates": "2024 – 2025",
+      "poste": {
+        "fr": "Poste d'exemple",
+        "en": "Example position"
+      },
+      "description": {
+        "fr": "Description d'exemple de la mission réalisée",
+        "en": "Example description of the assignment"
+      },
+      "puces": []
+    }
+  ],
+  "projets": [
+    {
+      "id": "exemple-projet",
+      "titre": {
+        "fr": "Projet d'exemple",
+        "en": "Example project"
+      },
+      "description": {
+        "fr": "Description d'exemple du projet réalisé",
+        "en": "Example description of the completed project"
+      },
+      "puces": []
+    }
+  ],
+  "competences": [
+    {
+      "id": "exemple-competence",
+      "categorie": {
+        "fr": "Catégorie d'exemple",
+        "en": "Example category"
+      },
+      "valeur": {
+        "fr": "Compétence 1, compétence 2, compétence 3",
+        "en": "Skill 1, skill 2, skill 3"
+      }
+    }
+  ],
+  "langues": [
+    {
+      "id": "exemple-langue",
+      "fr": "Langue d'exemple",
+      "en": "Example language",
+      "niveau": {
+        "fr": "Niveau d'exemple",
+        "en": "Example level"
+      }
+    }
+  ],
+  "interets": [
+    {
+      "id": "exemple-interet",
+      "fr": "Centre d'intérêt d'exemple",
+      "en": "Example interest"
+    }
+  ],
+  "sectionsPersonnalisees": []
+}

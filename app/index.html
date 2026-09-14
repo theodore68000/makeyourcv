@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mes candidatures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="fond-ats">
+
+<div class="ats">
+  <header class="ats-entete">
+    <h1>Mes candidatures</h1>
+    <div class="ats-actions">
+      <button id="bouton-gerer-statuts" type="button">Gérer les statuts</button>
+      <button id="bouton-editeur-libre" type="button">Éditeur de CV libre</button>
+      <button id="bouton-nouvelle" class="principal" type="button">+ Nouvelle candidature</button>
+    </div>
+  </header>
+
+  <div class="ats-filtre">
+    <label>Filtrer par statut
+      <select id="filtre-statut"></select>
+    </label>
+    <label>Du
+      <input type="date" id="filtre-date-debut">
+    </label>
+    <label>Au
+      <input type="date" id="filtre-date-fin">
+    </label>
+    <label>Trier par
+      <select id="tri">
+        <option value="activite">Dernière activité</option>
+        <option value="note">Note (décroissant)</option>
+      </select>
+    </label>
+  </div>
+
+  <p id="message-erreur" class="message-erreur" role="alert" hidden></p>
+
+  <table class="table-candidatures">
+    <thead>
+      <tr><th>Entreprise</th><th>Poste</th><th>Statut</th><th>Note</th><th>Dernière activité</th><th>Date de création</th><th></th></tr>
+    </thead>
+    <tbody id="corps-table"></tbody>
+  </table>
+  <p id="message-vide" class="message-vide" hidden>Aucune candidature pour l’instant. Clique sur « + Nouvelle candidature » pour commencer.</p>
+</div>
+
+<dialog id="dialogue-nouvelle">
+  <form id="formulaire-nouvelle" method="dialog">
+    <h2>Nouvelle candidature</h2>
+    <label>Entreprise <input type="text" name="entreprise" required></label>
+    <label>Poste <input type="text" name="poste"></label>
+    <label>Lien de l’offre <input type="url" name="lienOffre" placeholder="https://…"></label>
+    <label>Contact(s) <input type="text" name="contacts" placeholder="Ex. Jean Dupont, DRH — jean.dupont@entreprise.fr"></label>
+    <label>Notes <textarea name="notes" rows="3"></textarea></label>
+    <div class="champ-etoiles">
+      <span class="libelle-etoiles">Note</span>
+      <div id="etoiles-nouvelle"></div>
+    </div>
+    <div class="dialogue-actions">
+      <button type="button" data-annuler>Annuler</button>
+      <button type="submit" class="principal">Créer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-statuts">
+  <h2>Statuts personnalisés</h2>
+  <p class="aide">Les statuts sont entièrement libres : crée les étapes de ton propre suivi (ex. Repérée, Envoyée, Entretien RH…).</p>
+  <ul id="liste-statuts" class="liste-statuts"></ul>
+  <form id="formulaire-statut">
+    <input type="text" name="nom" placeholder="Nom du nouveau statut" required>
+    <button type="submit">Ajouter</button>
+  </form>
+  <div class="dialogue-actions"><button type="button" data-fermer>Fermer</button></div>
+</dialog>
+
+<script type="module" src="ats.js"></script>
+</body>
+</html>

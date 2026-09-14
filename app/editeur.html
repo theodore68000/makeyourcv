@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV modulable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="layout">
+  <aside class="panel" id="panel" aria-label="Réglages du CV"></aside>
+
+  <div class="apercu">
+    <div class="bandeau-candidature" id="bandeau-candidature" hidden></div>
+    <div class="apercu-barre">
+      <span class="status" id="status" role="status"></span>
+      <button class="bouton-compact-suggere" id="suggestion-compact" hidden>Passer en mode compact</button>
+      <button class="bouton-enregistrer-candidature" id="bouton-enregistrer-candidature" hidden type="button">Enregistrer pour cette candidature</button>
+      <button class="print" onclick="window.print()">Imprimer en PDF</button>
+    </div>
+    <div class="stage"><div class="feuilles" id="page"></div></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

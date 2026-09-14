@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche candidature</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="fond-ats">
+
+<div class="fiche">
+  <a href="index.html" class="lien-retour">← Retour aux candidatures</a>
+
+  <p id="message-erreur" class="message-erreur" role="alert" hidden></p>
+
+  <div id="contenu-fiche" hidden>
+    <header class="fiche-entete">
+      <div>
+        <h1 id="titre-entreprise"></h1>
+        <p id="sous-titre-poste" class="sous-titre"></p>
+      </div>
+      <div class="fiche-actions">
+        <select id="selecteur-statut"></select>
+        <button id="bouton-supprimer" class="danger" type="button">Supprimer la candidature</button>
+      </div>
+    </header>
+
+    <section class="fiche-section">
+      <h2>Informations</h2>
+      <form id="formulaire-infos" class="formulaire-infos">
+        <label>Entreprise <input type="text" name="entreprise" required></label>
+        <label>Poste <input type="text" name="poste"></label>
+        <label>Lien de l’offre <input type="url" name="lienOffre" placeholder="https://…"></label>
+        <label>Contact(s) <input type="text" name="contacts" placeholder="Ex. Jean Dupont, DRH — jean.dupont@entreprise.fr"></label>
+        <label class="pleine-largeur">Notes <textarea name="notes" rows="3"></textarea></label>
+        <div class="champ-etoiles pleine-largeur">
+          <span class="libelle-etoiles">Note</span>
+          <div id="etoiles-infos"></div>
+        </div>
+        <button type="submit" class="principal">Enregistrer les informations</button>
+      </form>
+    </section>
+
+    <section class="fiche-section">
+      <h2>Historique</h2>
+      <ul id="liste-historique" class="liste-historique"></ul>
+      <form id="formulaire-evenement" class="formulaire-evenement">
+        <input type="date" name="date" title="Date (aujourd’hui par défaut)">
+        <input type="text" name="texte" placeholder="Ex. Entretien RH prévu le 20/09" required>
+        <button type="submit">Ajouter</button>
+      </form>
+    </section>
+
+    <section class="fiche-section">
+      <h2>Documents</h2>
+      <ul id="liste-documents" class="liste-documents"></ul>
+      <label class="champ-fichier">
+        + Ajouter un document (20 Mo max.)
+        <input type="file" id="entree-fichier" hidden>
+      </label>
+    </section>
+
+    <section class="fiche-section" id="section-cv">
+      <h2>CV</h2>
+      <div id="etat-cv"></div>
+    </section>
+  </div>
+</div>
+
+<script type="module" src="fiche.js"></script>
+</body>
+</html>

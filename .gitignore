@@ -1,0 +1,19 @@
+# Données personnelles — ne jamais publier
+data/cv.json
+data/photo.*
+data/statuts.json
+candidatures/
+
+# Cahier des charges et historique : contiennent des infos personnelles
+CLAUDE.md
+HISTORIQUE.md
+
+# Prototype de référence : données personnelles d'origine en dur, jamais retouché
+prototype/
+
+# Divers
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+venv/
