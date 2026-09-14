@@ -14,24 +14,46 @@ import { paginerSobre, paginerVisuel } from "./pagination.js";
 import { construirePanneau } from "./controls.js";
 import { api } from "./api.js";
 
-// Sélection par défaut, identique à SELECTION dans le prototype.
-const SELECTION_PAR_DEFAUT = {
-  template: "sobre",          // "sobre" | "visuel"
-  langue: "fr",               // "fr" | "en"
-  compact: false,             // true = espacements et texte réduits
-  titre: "eleve-ingenieur",   // id dans CV.titres, ou null
-  titreLibre: "",             // si rempli, remplace le titre ci-dessus
-  contact: ["ville", "telephone", "email", "linkedin"],   // + "permis"
-  sections: ["formation", "experiences", "projets", "competences", "interets"],
-  formation:   ["centralesupelec", "cpge", "lycee"],
-  experiences: ["club-tech", "colleur", "soutien"],        // "stage-medical" masqué
-  projets:     ["logiciel-recrutement", "chargeur", "plante"],
-  competences: ["prog", "cao", "bureautique", "savoir-etre"],
-  langues:     ["fr", "en", "de"],
-  interets:    ["sport", "montagne", "photo", "tech", "voyages", "bricolage"],
-  interetsAffichage: "phrase", // "phrase" (une phrase) | "liste" (une ligne par centre, titre en gras)
-  puces: {}   // ex. { centralesupelec: ["cs-sciences", "cs-entreprise"] } ; sinon toutes les puces
-};
+// Sélection « tout coché », construite depuis l'annuaire courant : sert de
+// secours quand il n'y a pas encore de sélection propre (premier lancement,
+// candidature sans CV), pour ne jamais afficher une page vide — y compris
+// avec l'annuaire d'exemple fourni sur GitHub, dont les id ne correspondent
+// à aucune sélection préexistante.
+function selectionToutSelectionnee(CV) {
+  const I = CV.identite;
+  const valeurNonVide = v => {
+    if (!v) return false;
+    if (typeof v === "object") return !!(v.fr || v.en);
+    return true;
+  };
+  const contactFixe = [["ville", I.ville], ["telephone", I.telephone], ["email", I.email], ["linkedin", I.linkedin], ["permis", I.permis]]
+    .filter(([, valeur]) => valeurNonVide(valeur))
+    .map(([id]) => id);
+  const contactPerso = (I.coordonneesPersonnalisees || []).map(c => c.id);
+
+  const sectionsPerso = CV.sectionsPersonnalisees || [];
+  const S = {
+    template: "sobre",          // "sobre" | "visuel"
+    langue: "fr",                // "fr" | "en"
+    compact: false,               // true = espacements et texte réduits
+    titre: (CV.titres[0] && CV.titres[0].id) || null,  // id dans CV.titres, ou null
+    titreLibre: "",                // si rempli, remplace le titre ci-dessus
+    contact: [...contactFixe, ...contactPerso],
+    sections: ["formation", "experiences", "projets", "competences", "interets", ...sectionsPerso.map(s => s.id)],
+    formation: CV.formations.map(f => f.id),
+    experiences: CV.experiences.map(e => e.id),
+    projets: CV.projets.map(p => p.id),
+    competences: CV.competences.map(c => c.id),
+    langues: CV.langues.map(l => l.id),
+    interets: CV.interets.map(i => i.id),
+    interetsAffichage: "phrase", // "phrase" (une phrase) | "liste" (une ligne par centre, titre en gras)
+    puces: {}                    // {} = toutes les puces de chaque élément
+  };
+  for (const section of sectionsPerso) {
+    S[section.id] = (section.items || []).map(it => it.id);
+  }
+  return S;
+}
 
 // Filtre une sélection sauvegardée contre l'annuaire actuel : les id qui
 // n'existent plus sont retirés et remontés dans `manquants`.
@@ -208,13 +230,13 @@ async function initEdition() {
     } catch { /* source introuvable : on ignore et repart de la sélection par défaut */ }
   }
 
-  // Réconciliée dans tous les cas, y compris la sélection par défaut : sur un
-  // annuaire vide ou différent de celui d'origine, ses id (ex. "eleve-ingenieur")
-  // n'existent pas et doivent être filtrés silencieusement, comme n'importe
-  // quelle sélection reprise — la différence est qu'on n'affiche le bandeau
-  // "éléments retirés" que pour une vraie reprise (candidature/copierDe), pas
-  // pour ce bootstrap dont l'utilisateur n'a jamais choisi le contenu.
-  const { S: reconciliee, manquants } = reconcilierSelection(CV, selectionBrute || SELECTION_PAR_DEFAUT);
+  // Réconciliée dans tous les cas, y compris la sélection « tout coché » :
+  // sur un annuaire différent de celui d'origine (candidature copiée), ses id
+  // n'existent pas tous et doivent être filtrés silencieusement, comme
+  // n'importe quelle sélection reprise — la différence est qu'on n'affiche le
+  // bandeau "éléments retirés" que pour une vraie reprise (candidature/copierDe),
+  // pas pour ce bootstrap dont l'utilisateur n'a jamais choisi le contenu.
+  const { S: reconciliee, manquants } = reconcilierSelection(CV, selectionBrute || selectionToutSelectionnee(CV));
   S = reconciliee;
   if (manquants.length && selectionBrute) {
     ajouterBandeau(

@@ -13,14 +13,9 @@
   },
   "titres": [
     {
-      "id": "titre-exemple-1",
-      "fr": "Élève ingénieur",
-      "en": "Engineering student"
-    },
-    {
-      "id": "titre-exemple-2",
-      "fr": "À la recherche d'un stage",
-      "en": "Looking for an internship"
+      "id": "titre-exemple-stage",
+      "fr": "Étudiant à la recherche d'un stage",
+      "en": "Student looking for an internship"
     }
   ],
   "formations": [
