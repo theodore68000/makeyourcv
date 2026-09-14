@@ -3,12 +3,12 @@
     "prenom": "",
     "nom": "",
     "photo": "data/photo.png",
-    "ville": "",
-    "telephone": "",
-    "email": "",
-    "linkedin": "",
-    "linkedinUrl": "",
-    "permis": "",
+    "ville": "Ville Exemple",
+    "telephone": "06 00 00 00 00",
+    "email": "prenom.nom@exemple.fr",
+    "linkedin": "linkedin.com/in/exemple",
+    "linkedinUrl": "https://www.linkedin.com/in/exemple",
+    "permis": "Permis B",
     "coordonneesPersonnalisees": []
   },
   "titres": [
