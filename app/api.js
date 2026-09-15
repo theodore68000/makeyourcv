@@ -31,6 +31,9 @@ export const api = {
   statuts: () => requeteJSON("/api/statuts"),
   enregistrerStatuts: statuts => requeteJSON("/api/statuts", { method: "PUT", ...enJSON(statuts) }),
 
+  derniereSelection: () => requeteJSON("/api/derniere-selection"),
+  enregistrerDerniereSelection: selection => requeteJSON("/api/derniere-selection", { method: "PUT", ...enJSON(selection) }),
+
   candidatures: () => requeteJSON("/api/candidatures"),
   candidature: id => requeteJSON(`/api/candidatures/${encodeURIComponent(id)}`),
   creerCandidature: donnees => requeteJSON("/api/candidatures", { method: "POST", ...enJSON(donnees) }),

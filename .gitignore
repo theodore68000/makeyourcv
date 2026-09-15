@@ -2,6 +2,7 @@
 data/cv.json
 data/photo.*
 data/statuts.json
+data/derniere-selection.json
 candidatures/
 
 # Cahier des charges et historique : contiennent des infos personnelles

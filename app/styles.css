@@ -1,6 +1,6 @@
 /* ============================================================
    PALETTE DE L'INTERFACE (habillage de l'app, pas des templates
-   de CV — .sobre/.visuel/.compact plus bas restent inchangés).
+   de CV — .sobre/.visuel/.compact-N plus bas restent inchangés).
    ============================================================ */
 :root {
   --fond: #f3f2ee;
@@ -220,6 +220,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .sobre ul { margin: 0; padding-left: 17pt; list-style: square; }
 .sobre li::marker { font-size: .8em; }
 .sobre .s-projets li { margin-bottom: 2pt; }
+.sobre .s-projet-desc { font-style: italic; }
 .sobre .s-lignes p { margin-bottom: 2pt; }
 
 /* ============================================================
@@ -284,26 +285,64 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .visuel .v-projets { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5mm 6mm; }
 .visuel .v-projet-titre { font-weight: 600; color: #161922; line-height: 1.3; }
 .visuel .v-projet p { margin: .5mm 0 0; }
+.visuel .v-projet-desc { font-style: italic; }
 
 /* ============================================================
-   MODE COMPACT (les deux templates) : espacements et texte réduits
+   MODE COMPACT (les deux templates) : espacements et texte réduits.
+   4 niveaux : 1 = normal (pas de classe), 2 = .compact-2 (compact
+   d'origine), 3 = .compact-3, 4 = .compact-4 (le plus resserré, mais
+   le texte reste lisible — pas de niveau plus petit que 4).
    ============================================================ */
-.page.sobre.compact { padding: 13mm 16mm 11mm; font-size: 10pt; line-height: 1.2; }
-.sobre.compact .s-contact { margin-bottom: 8pt; }
-.sobre.compact h2 { font-size: 10pt; margin: 10pt 0 5pt; }
-.sobre.compact .s-entry { margin-bottom: 6pt; }
-.sobre.compact .s-projets li, .sobre.compact .s-lignes p { margin-bottom: 1pt; }
+.page.sobre.compact-2 { padding: 13mm 16mm 11mm; font-size: 10pt; line-height: 1.2; }
+.sobre.compact-2 .s-contact { margin-bottom: 8pt; }
+.sobre.compact-2 h2 { font-size: 10pt; margin: 10pt 0 5pt; }
+.sobre.compact-2 .s-entry { margin-bottom: 6pt; }
+.sobre.compact-2 .s-projets li, .sobre.compact-2 .s-lignes p { margin-bottom: 1pt; }
 
-.page.visuel.compact { font-size: 8pt; line-height: 1.36; }
-.visuel.compact .v-side { padding: 10mm 6mm 8mm 8mm; }
-.visuel.compact .v-main { padding: 11mm 11mm 8mm 8mm; }
-.visuel.compact .v-photo { width: 38mm; height: 38mm; margin-bottom: 6mm; }
-.visuel.compact h1 { font-size: 22pt; }
-.visuel.compact h2 { font-size: 11pt; margin: 5.5mm 0 2.5mm; }
-.visuel.compact h3 { margin: 4.5mm 0 2mm; }
-.visuel.compact .v-entry { margin-bottom: 3mm; }
-.visuel.compact .v-skill { margin-bottom: 1.5mm; }
-.visuel.compact .v-projets { gap: 2.5mm 5mm; }
+.page.sobre.compact-3 { padding: 11mm 14mm 9mm; font-size: 9.5pt; line-height: 1.15; }
+.sobre.compact-3 .s-contact { margin-bottom: 6pt; }
+.sobre.compact-3 h2 { font-size: 9.5pt; margin: 8pt 0 4pt; }
+.sobre.compact-3 .s-entry { margin-bottom: 4.5pt; }
+.sobre.compact-3 .s-projets li, .sobre.compact-3 .s-lignes p { margin-bottom: .5pt; }
+
+.page.sobre.compact-4 { padding: 10mm 12mm 8mm; font-size: 9pt; line-height: 1.1; }
+.sobre.compact-4 .s-contact { margin-bottom: 5pt; }
+.sobre.compact-4 h2 { font-size: 9pt; margin: 6pt 0 3pt; }
+.sobre.compact-4 .s-entry { margin-bottom: 3.5pt; }
+.sobre.compact-4 .s-projets li, .sobre.compact-4 .s-lignes p { margin-bottom: 0; }
+
+.page.visuel.compact-2 { font-size: 8pt; line-height: 1.36; }
+.visuel.compact-2 .v-side { padding: 10mm 6mm 8mm 8mm; }
+.visuel.compact-2 .v-main { padding: 11mm 11mm 8mm 8mm; }
+.visuel.compact-2 .v-photo { width: 38mm; height: 38mm; margin-bottom: 6mm; }
+.visuel.compact-2 h1 { font-size: 22pt; }
+.visuel.compact-2 h2 { font-size: 11pt; margin: 5.5mm 0 2.5mm; }
+.visuel.compact-2 h3 { margin: 4.5mm 0 2mm; }
+.visuel.compact-2 .v-entry { margin-bottom: 3mm; }
+.visuel.compact-2 .v-skill { margin-bottom: 1.5mm; }
+.visuel.compact-2 .v-projets { gap: 2.5mm 5mm; }
+
+.page.visuel.compact-3 { font-size: 7.6pt; line-height: 1.28; }
+.visuel.compact-3 .v-side { padding: 8mm 5mm 7mm 7mm; }
+.visuel.compact-3 .v-main { padding: 9mm 9mm 7mm 7mm; }
+.visuel.compact-3 .v-photo { width: 34mm; height: 34mm; margin-bottom: 5mm; }
+.visuel.compact-3 h1 { font-size: 20pt; }
+.visuel.compact-3 h2 { font-size: 10.5pt; margin: 4.5mm 0 2mm; }
+.visuel.compact-3 h3 { margin: 3.5mm 0 1.5mm; }
+.visuel.compact-3 .v-entry { margin-bottom: 2.5mm; }
+.visuel.compact-3 .v-skill { margin-bottom: 1.2mm; }
+.visuel.compact-3 .v-projets { gap: 2mm 4mm; }
+
+.page.visuel.compact-4 { font-size: 7.3pt; line-height: 1.22; }
+.visuel.compact-4 .v-side { padding: 7mm 5mm 6mm 6mm; }
+.visuel.compact-4 .v-main { padding: 8mm 8mm 6mm 6mm; }
+.visuel.compact-4 .v-photo { width: 30mm; height: 30mm; margin-bottom: 4mm; }
+.visuel.compact-4 h1 { font-size: 18pt; }
+.visuel.compact-4 h2 { font-size: 10pt; margin: 3.5mm 0 1.5mm; }
+.visuel.compact-4 h3 { margin: 3mm 0 1mm; }
+.visuel.compact-4 .v-entry { margin-bottom: 2mm; }
+.visuel.compact-4 .v-skill { margin-bottom: 1mm; }
+.visuel.compact-4 .v-projets { gap: 1.5mm 3.5mm; }
 
 /* ============================================================
    VUES ATS (liste des candidatures + fiche détail)

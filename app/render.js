@@ -79,11 +79,11 @@ export function renderSobre(CV, S) {
   const { tx, colon, pick, titreAffiche, enLigne, pucesDe, contacts, lien } = creerOutils(CV, S);
   const I = CV.identite, titre = titreAffiche();
 
-  function sEntry(titre, lieu, sous, dates, desc, puces) {
+  function sEntry(titre, lieu, sous, dates, desc, puces, descClasse = "") {
     return `<div class="s-entry">
     <div class="s-row"><b>${tx(titre)}</b><span>${tx(lieu)}</span></div>
     ${sous || dates ? `<div class="s-row"><i>${tx(sous)}</i><i>${tx(dates)}</i></div>` : ""}
-    ${desc ? `<p>${tx(desc)}</p>` : ""}
+    ${desc ? `<p${descClasse ? ` class="${descClasse}"` : ""}>${tx(desc)}</p>` : ""}
     ${puces.length ? `<ul>${puces.map(p => `<li>${tx(p)}</li>`).join("")}</ul>` : ""}
   </div>`;
   }
@@ -94,7 +94,7 @@ export function renderSobre(CV, S) {
   function projets() {
     const items = pick(CV.projets, S.projets);
     if (!items.length) return [];
-    const cartes = items.map(p => sEntry(p.titre, "", null, null, p.description, pucesDe(p)));
+    const cartes = items.map(p => sEntry(p.titre, "", null, null, p.description, pucesDe(p), "s-projet-desc"));
     return decouperEnUnites(`<h2>${tx(LABELS.projets)}</h2>`, cartes);
   }
 
@@ -200,7 +200,7 @@ export function renderVisuel(CV, S) {
       const cartesHtml = items.map(p => {
         const puces = pucesDe(p);
         return `<div class="v-projet"><div class="v-projet-titre">${tx(p.titre)}</div>` +
-          `${p.description ? `<p>${tx(p.description)}</p>` : ""}` +
+          `${p.description ? `<p class="v-projet-desc">${tx(p.description)}</p>` : ""}` +
           `${puces.length ? `<ul class="v-puces">${puces.map(pc => `<li>${tx(pc)}</li>`).join("")}</ul>` : ""}</div>`;
       });
       return decouperEnUnites(`<h2>${tx(LABELS.projets)}</h2>`, [`<div class="v-projets">${cartesHtml.join("")}</div>`]);

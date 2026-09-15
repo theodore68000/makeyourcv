@@ -35,7 +35,7 @@ function selectionToutSelectionnee(CV) {
   const S = {
     template: "sobre",          // "sobre" | "visuel"
     langue: "fr",                // "fr" | "en"
-    compact: false,               // true = espacements et texte réduits
+    compactNiveau: 1,             // 1 = normal, 2 à 4 = espacements et texte de plus en plus réduits
     titre: (CV.titres[0] && CV.titres[0].id) || null,  // id dans CV.titres, ou null
     titreLibre: "",                // si rempli, remplace le titre ci-dessus
     contact: [...contactFixe, ...contactPerso],
@@ -130,10 +130,10 @@ function render() {
   let pages;
   if (S.template === "sobre") {
     const { header, blocks } = renderSobre(CV, S);
-    pages = paginerSobre(header, blocks, S.compact);
+    pages = paginerSobre(header, blocks, S.compactNiveau);
   } else {
     const { aside, header, blocks } = renderVisuel(CV, S);
-    pages = paginerVisuel(aside, header, blocks, S.compact);
+    pages = paginerVisuel(aside, header, blocks, S.compactNiveau);
   }
   page.innerHTML = pages.join("");
   checkOverflow(pages.length);
@@ -142,7 +142,7 @@ function render() {
 function checkOverflow(nombrePages) {
   statut.textContent = nombrePages > 1 ? `${nombrePages} pages` : "Tient sur une page";
   statut.classList.toggle("over", nombrePages > 1);
-  suggestionCompact.hidden = !(nombrePages > 1 && !S.compact) || lectureSeule;
+  suggestionCompact.hidden = !(nombrePages > 1 && S.compactNiveau < 4) || lectureSeule;
 }
 
 function fit() {
@@ -151,7 +151,40 @@ function fit() {
 }
 
 function reconstruirePanneau() {
-  construirePanneau(panel, CV, S, render, enregistrerAnnuaire);
+  construirePanneau(panel, CV, S, onReglageChange, enregistrerAnnuaire);
+}
+
+// Mémorise automatiquement la sélection (ordre + cases cochées) du mode
+// « libre » (pas de candidature ouverte), pour la retrouver telle quelle à la
+// prochaine visite au lieu de repartir de la sélection par défaut. Sans objet
+// pour une candidature (déjà sauvegardée via le bouton dédié) ou en lecture
+// seule (rien à mémoriser).
+let minuterieSauvegardeSelection = null;
+function planifierSauvegardeSelection() {
+  if (candidatureId || lectureSeule) return;
+  clearTimeout(minuterieSauvegardeSelection);
+  minuterieSauvegardeSelection = setTimeout(() => {
+    api.enregistrerDerniereSelection(S).catch(() => {}); // best effort : pas grave si ça échoue
+  }, 600);
+}
+
+// Sauvegarde immédiate (sans attendre le délai ci-dessus) quand on quitte la
+// page, pour ne pas perdre le tout dernier changement.
+function flushSauvegardeSelection() {
+  if (candidatureId || lectureSeule || !S || !minuterieSauvegardeSelection) return;
+  clearTimeout(minuterieSauvegardeSelection);
+  fetch("/api/derniere-selection", {
+    method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(S), keepalive: true
+  }).catch(() => {});
+}
+window.addEventListener("pagehide", flushSauvegardeSelection);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") flushSauvegardeSelection();
+});
+
+function onReglageChange() {
+  render();
+  planifierSauvegardeSelection();
 }
 
 // Persiste l'annuaire (ajout/modification/suppression d'une puce) sur le
@@ -166,8 +199,8 @@ async function enregistrerAnnuaire() {
 }
 
 suggestionCompact.onclick = () => {
-  S.compact = true;
-  render();
+  S.compactNiveau = Math.min(4, S.compactNiveau + 1);
+  onReglageChange();
   reconstruirePanneau();
 };
 
@@ -228,6 +261,14 @@ async function initEdition() {
       const autre = await api.candidature(copierDeId);
       if (autre.cv) { selectionBrute = autre.cv.selection; sourceCopiee = autre.entreprise; }
     } catch { /* source introuvable : on ignore et repart de la sélection par défaut */ }
+  } else if (!candidatureId) {
+    // Mode « libre » (pas de candidature ouverte) : on reprend la dernière
+    // sélection mémorisée automatiquement (voir planifierSauvegardeSelection),
+    // pour retrouver l'écran tel qu'il a été laissé la dernière fois.
+    try {
+      const derniere = await api.derniereSelection();
+      if (derniere) selectionBrute = derniere;
+    } catch { /* pas grave : on repart de la sélection « tout coché » */ }
   }
 
   // Réconciliée dans tous les cas, y compris la sélection « tout coché » :

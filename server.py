@@ -25,6 +25,7 @@ DOSSIER_DATA = RACINE / "data"
 DOSSIER_CANDIDATURES = RACINE / "candidatures"
 FICHIER_CV = DOSSIER_DATA / "cv.json"
 FICHIER_STATUTS = DOSSIER_DATA / "statuts.json"
+FICHIER_DERNIERE_SELECTION = DOSSIER_DATA / "derniere-selection.json"
 FICHIER_CV_EXEMPLE = DOSSIER_DATA / "cv.exemple.json"
 FICHIER_STATUTS_EXEMPLE = DOSSIER_DATA / "statuts.exemple.json"
 FICHIER_PHOTO_EXEMPLE = DOSSIER_DATA / "PhotoExemple.png"
@@ -150,6 +151,20 @@ def ecrire_statuts(valeur):
     FICHIER_STATUTS.write_text(json.dumps(valeur, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def lire_derniere_selection():
+    """La sélection (ordre + cases cochées) utilisée en dehors de toute
+    candidature, mémorisée automatiquement pour la retrouver telle quelle à
+    la prochaine visite — None si l'utilisateur n'a encore rien personnalisé."""
+    if not FICHIER_DERNIERE_SELECTION.is_file():
+        return None
+    return json.loads(FICHIER_DERNIERE_SELECTION.read_text(encoding="utf-8"))
+
+
+def ecrire_derniere_selection(valeur):
+    DOSSIER_DATA.mkdir(parents=True, exist_ok=True)
+    FICHIER_DERNIERE_SELECTION.write_text(json.dumps(valeur, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def generer_pdf_candidature(id_):
     """Génère le PDF exact du CV enregistré pour cette candidature (via un
     Chromium headless piloté par Playwright), et l'enregistre dans le dossier
@@ -262,6 +277,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if chemin == "/api/statuts":
             self.envoyer_json(lire_statuts())
+            return
+        if chemin == "/api/derniere-selection":
+            self.envoyer_json(lire_derniere_selection())
             return
         if chemin == "/api/candidatures":
             self.envoyer_json(lister_candidatures())
@@ -390,6 +408,15 @@ class Handler(BaseHTTPRequestHandler):
                 self.envoyer_erreur_json(400, "Annuaire invalide")
                 return
             ecrire_cv(corps)
+            self.envoyer_json(corps)
+            return
+
+        if chemin == "/api/derniere-selection":
+            corps = self.lire_corps_json()
+            if not isinstance(corps, dict):
+                self.envoyer_erreur_json(400, "Sélection invalide")
+                return
+            ecrire_derniere_selection(corps)
             self.envoyer_json(corps)
             return
 

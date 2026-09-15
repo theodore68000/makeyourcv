@@ -1051,13 +1051,14 @@ export function construirePanneau(panel, CV, S, onChange, onAnnuaireModifie) {
 
   const grCompact = document.createElement("div");
   grCompact.className = "groupe-reglage";
-  grCompact.append(
-    creerLibelleGroupe("Mode compact"),
-    creerBoutonsSegment(
-      [{ value: false, label: "Non" }, { value: true, label: "Oui" }],
-      () => S.compact, v => { S.compact = v; }, onChange
-    )
+  const segCompact = creerBoutonsSegment(
+    [{ value: 1, label: "1" }, { value: 2, label: "2" }, { value: 3, label: "3" }, { value: 4, label: "4" }],
+    () => S.compactNiveau, v => { S.compactNiveau = v; }, onChange
   );
+  segCompact.querySelectorAll("button").forEach((b, i) => {
+    b.title = i === 0 ? "Normal" : `Compact niveau ${i + 1}`;
+  });
+  grCompact.append(creerLibelleGroupe("Mode compact"), segCompact);
   carteRapide.appendChild(grCompact);
 
   panel.appendChild(carteRapide);

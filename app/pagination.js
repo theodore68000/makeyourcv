@@ -64,10 +64,16 @@ function repartirEnGroupes(bas, dispo) {
   return groupes;
 }
 
+// Suffixe de classe pour un niveau de compacité (1 = normal, pas de classe ;
+// 2 à 4 = .compact-2/.compact-3/.compact-4, voir styles.css).
+function classeCompact(niveau) {
+  return niveau > 1 ? ` compact-${niveau}` : "";
+}
+
 // Template sobre : une seule largeur du début à la fin, donc une seule passe
 // de mesure suffit.
-export function paginerSobre(header, blocks, compact) {
-  const classes = "page sobre" + (compact ? " compact" : "");
+export function paginerSobre(header, blocks, compactNiveau) {
+  const classes = "page sobre" + classeCompact(compactNiveau);
   if (!blocks.length) return [`<div class="${classes}">${header}</div>`];
 
   const { bas, dispo } = mesurerPage(classes, header + blocks.join(""), header, blocks);
@@ -81,8 +87,8 @@ export function paginerSobre(header, blocks, compact) {
 // dont la colonne principale est donc plus étroite (à côté du bandeau) ; les
 // pages suivantes n'ont pas de bandeau et la colonne principale y occupe
 // toute la largeur (classe "suite") — d'où les deux passes de mesure.
-export function paginerVisuel(aside, header, blocks, compact) {
-  const classes = "page visuel" + (compact ? " compact" : "");
+export function paginerVisuel(aside, header, blocks, compactNiveau) {
+  const classes = "page visuel" + classeCompact(compactNiveau);
   if (!blocks.length) {
     return [`<div class="${classes}">${aside}<main class="v-main">${header}</main></div>`];
   }
