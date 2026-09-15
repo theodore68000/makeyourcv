@@ -1087,7 +1087,8 @@ export function construirePanneau(panel, CV, S, onChange, onAnnuaireModifie) {
 
   for (const section of CV.sectionsPersonnalisees || []) {
     panel.appendChild(creerSection(T(section.titre), creerSectionEditable(
-      S, section.id, section.items, { ...SCHEMAS.projets, titre: "un élément" }, onChange, onAnnuaireModifie
+      S, section.id, section.items, { ...SCHEMAS.projets, titre: "un élément" }, onChange, onAnnuaireModifie,
+      item => creerExtraPuces(S, item, onChange, onAnnuaireModifie)
     )));
   }
 

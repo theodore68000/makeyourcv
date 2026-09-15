@@ -142,7 +142,7 @@ export function renderSobre(CV, S) {
     SOBRE[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
-      const cartes = items.map(it => sEntry(it.titre, "", null, null, it.description, []));
+      const cartes = items.map(it => sEntry(it.titre, "", null, null, it.description, pucesDe(it)));
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, cartes);
     };
   }
@@ -213,7 +213,12 @@ export function renderVisuel(CV, S) {
     VISUEL[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
-      const cartesHtml = items.map(it => `<div class="v-projet"><div class="v-projet-titre">${tx(it.titre)}</div><p>${tx(it.description)}</p></div>`);
+      const cartesHtml = items.map(it => {
+        const puces = pucesDe(it);
+        return `<div class="v-projet"><div class="v-projet-titre">${tx(it.titre)}</div>` +
+          `${it.description ? `<p>${tx(it.description)}</p>` : ""}` +
+          `${puces.length ? `<ul class="v-puces">${puces.map(pc => `<li>${tx(pc)}</li>`).join("")}</ul>` : ""}</div>`;
+      });
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, [`<div class="v-projets">${cartesHtml.join("")}</div>`]);
     };
   }
