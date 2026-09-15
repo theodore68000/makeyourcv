@@ -10,7 +10,7 @@
    ============================================================ */
 import { LABELS, texteLangue } from "./render.js";
 import { api, fichierEnBase64 } from "./api.js";
-
+ 
 const T = v => texteLangue(v, "fr");
 
 // Place les éléments sélectionnés en tête (dans l'ordre de la sélection),
