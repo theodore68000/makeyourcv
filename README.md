@@ -27,8 +27,8 @@ Il faut **Python 3.9 ou plus récent**. Vérifiez avec `python --version` (ou `p
 Téléchargez le projet, soit avec le bouton vert **Code → Download ZIP** (puis décompressez), soit en ligne de commande :
 
 ```bash
-git clone https://github.com/<votre-compte>/<votre-depot>.git
-cd <votre-depot>
+git clone https://github.com/theodore68000/makeyourcv.git
+cd makeyourcv
 python server.py
 ```
 
