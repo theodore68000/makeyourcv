@@ -284,32 +284,53 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 }
 .visuel .v-projets { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5mm 6mm; }
 .visuel .v-projet-titre { font-weight: 600; color: #161922; line-height: 1.3; }
+.visuel .v-projet-meta { display: flex; flex-wrap: wrap; gap: 0 2.5mm; font-size: 7.6pt; margin-top: .5mm; }
+.visuel .v-projet-dates { color: var(--accent); font-weight: 600; }
+.visuel .v-projet-lieu { color: #6b7081; }
 .visuel .v-projet p { margin: .5mm 0 0; }
 .visuel .v-projet-desc { font-style: italic; }
 
 /* ============================================================
    MODE COMPACT (les deux templates) : espacements et texte réduits.
-   4 niveaux : 1 = normal (pas de classe), 2 = .compact-2 (compact
-   d'origine), 3 = .compact-3, 4 = .compact-4 (le plus resserré, mais
-   le texte reste lisible — pas de niveau plus petit que 4).
+   6 niveaux : 1 = normal (pas de classe), 2 à 6 = .compact-2…6.
+
+   Sobre : le niveau 6 est le plus resserré qui reste raisonnablement
+   lisible (ex. niveau 4 de l'ancienne échelle à 4 niveaux) ; les
+   niveaux 2 à 5 sont interpolés linéairement entre le niveau 1 et le
+   niveau 6, pour une progression régulière.
+
+   Visuel : les niveaux 1 à 4 sont inchangés (ancienne échelle) ; 5 et
+   6 vont plus loin, dans la continuité de la même progression.
    ============================================================ */
-.page.sobre.compact-2 { padding: 13mm 16mm 11mm; font-size: 10pt; line-height: 1.2; }
-.sobre.compact-2 .s-contact { margin-bottom: 8pt; }
-.sobre.compact-2 h2 { font-size: 10pt; margin: 10pt 0 5pt; }
-.sobre.compact-2 .s-entry { margin-bottom: 6pt; }
-.sobre.compact-2 .s-projets li, .sobre.compact-2 .s-lignes p { margin-bottom: 1pt; }
+.page.sobre.compact-2 { padding: 15.6mm 16.8mm 12.8mm; font-size: 10.2pt; line-height: 1.24; }
+.sobre.compact-2 .s-contact { margin-bottom: 10.6pt; }
+.sobre.compact-2 h2 { font-size: 10.2pt; margin: 13.2pt 0 7pt; }
+.sobre.compact-2 .s-entry { margin-bottom: 7.9pt; }
+.sobre.compact-2 .s-projets li, .sobre.compact-2 .s-lignes p { margin-bottom: 1.6pt; }
 
-.page.sobre.compact-3 { padding: 11mm 14mm 9mm; font-size: 9.5pt; line-height: 1.15; }
-.sobre.compact-3 .s-contact { margin-bottom: 6pt; }
-.sobre.compact-3 h2 { font-size: 9.5pt; margin: 8pt 0 4pt; }
-.sobre.compact-3 .s-entry { margin-bottom: 4.5pt; }
-.sobre.compact-3 .s-projets li, .sobre.compact-3 .s-lignes p { margin-bottom: .5pt; }
+.page.sobre.compact-3 { padding: 14.2mm 15.6mm 11.6mm; font-size: 9.9pt; line-height: 1.21; }
+.sobre.compact-3 .s-contact { margin-bottom: 9.2pt; }
+.sobre.compact-3 h2 { font-size: 9.9pt; margin: 11.4pt 0 6pt; }
+.sobre.compact-3 .s-entry { margin-bottom: 6.8pt; }
+.sobre.compact-3 .s-projets li, .sobre.compact-3 .s-lignes p { margin-bottom: 1.2pt; }
 
-.page.sobre.compact-4 { padding: 10mm 12mm 8mm; font-size: 9pt; line-height: 1.1; }
-.sobre.compact-4 .s-contact { margin-bottom: 5pt; }
-.sobre.compact-4 h2 { font-size: 9pt; margin: 6pt 0 3pt; }
-.sobre.compact-4 .s-entry { margin-bottom: 3.5pt; }
-.sobre.compact-4 .s-projets li, .sobre.compact-4 .s-lignes p { margin-bottom: 0; }
+.page.sobre.compact-4 { padding: 12.8mm 14.4mm 10.4mm; font-size: 9.6pt; line-height: 1.17; }
+.sobre.compact-4 .s-contact { margin-bottom: 7.8pt; }
+.sobre.compact-4 h2 { font-size: 9.6pt; margin: 9.6pt 0 5pt; }
+.sobre.compact-4 .s-entry { margin-bottom: 5.7pt; }
+.sobre.compact-4 .s-projets li, .sobre.compact-4 .s-lignes p { margin-bottom: .8pt; }
+
+.page.sobre.compact-5 { padding: 11.4mm 13.2mm 9.2mm; font-size: 9.3pt; line-height: 1.14; }
+.sobre.compact-5 .s-contact { margin-bottom: 6.4pt; }
+.sobre.compact-5 h2 { font-size: 9.3pt; margin: 7.8pt 0 4pt; }
+.sobre.compact-5 .s-entry { margin-bottom: 4.6pt; }
+.sobre.compact-5 .s-projets li, .sobre.compact-5 .s-lignes p { margin-bottom: .4pt; }
+
+.page.sobre.compact-6 { padding: 10mm 12mm 8mm; font-size: 9pt; line-height: 1.1; }
+.sobre.compact-6 .s-contact { margin-bottom: 5pt; }
+.sobre.compact-6 h2 { font-size: 9pt; margin: 6pt 0 3pt; }
+.sobre.compact-6 .s-entry { margin-bottom: 3.5pt; }
+.sobre.compact-6 .s-projets li, .sobre.compact-6 .s-lignes p { margin-bottom: 0; }
 
 .page.visuel.compact-2 { font-size: 8pt; line-height: 1.36; }
 .visuel.compact-2 .v-side { padding: 10mm 6mm 8mm 8mm; }
@@ -343,6 +364,28 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .visuel.compact-4 .v-entry { margin-bottom: 2mm; }
 .visuel.compact-4 .v-skill { margin-bottom: 1mm; }
 .visuel.compact-4 .v-projets { gap: 1.5mm 3.5mm; }
+
+.page.visuel.compact-5 { font-size: 7.1pt; line-height: 1.17; }
+.visuel.compact-5 .v-side { padding: 6mm 4mm 5mm 5mm; }
+.visuel.compact-5 .v-main { padding: 7mm 7mm 5mm 5mm; }
+.visuel.compact-5 .v-photo { width: 27mm; height: 27mm; margin-bottom: 3.5mm; }
+.visuel.compact-5 h1 { font-size: 16pt; }
+.visuel.compact-5 h2 { font-size: 9.5pt; margin: 3mm 0 1.2mm; }
+.visuel.compact-5 h3 { margin: 2.5mm 0 .8mm; }
+.visuel.compact-5 .v-entry { margin-bottom: 1.6mm; }
+.visuel.compact-5 .v-skill { margin-bottom: .8mm; }
+.visuel.compact-5 .v-projets { gap: 1.2mm 3mm; }
+
+.page.visuel.compact-6 { font-size: 6.9pt; line-height: 1.13; }
+.visuel.compact-6 .v-side { padding: 5mm 4mm 5mm 4mm; }
+.visuel.compact-6 .v-main { padding: 6mm 6mm 5mm 4mm; }
+.visuel.compact-6 .v-photo { width: 24mm; height: 24mm; margin-bottom: 3mm; }
+.visuel.compact-6 h1 { font-size: 14pt; }
+.visuel.compact-6 h2 { font-size: 9pt; margin: 2.5mm 0 1mm; }
+.visuel.compact-6 h3 { margin: 2mm 0 .6mm; }
+.visuel.compact-6 .v-entry { margin-bottom: 1.3mm; }
+.visuel.compact-6 .v-skill { margin-bottom: .6mm; }
+.visuel.compact-6 .v-projets { gap: 1mm 2.5mm; }
 
 /* ============================================================
    VUES ATS (liste des candidatures + fiche détail)

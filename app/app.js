@@ -35,7 +35,7 @@ function selectionToutSelectionnee(CV) {
   const S = {
     template: "sobre",          // "sobre" | "visuel"
     langue: "fr",                // "fr" | "en"
-    compactNiveau: 1,             // 1 = normal, 2 à 4 = espacements et texte de plus en plus réduits
+    compactNiveau: 1,             // 1 = normal, 2 à 6 = espacements et texte de plus en plus réduits
     titre: (CV.titres[0] && CV.titres[0].id) || null,  // id dans CV.titres, ou null
     titreLibre: "",                // si rempli, remplace le titre ci-dessus
     contact: [...contactFixe, ...contactPerso],
@@ -142,7 +142,7 @@ function render() {
 function checkOverflow(nombrePages) {
   statut.textContent = nombrePages > 1 ? `${nombrePages} pages` : "Tient sur une page";
   statut.classList.toggle("over", nombrePages > 1);
-  suggestionCompact.hidden = !(nombrePages > 1 && S.compactNiveau < 4) || lectureSeule;
+  suggestionCompact.hidden = !(nombrePages > 1 && S.compactNiveau < 6) || lectureSeule;
 }
 
 function fit() {
@@ -199,7 +199,7 @@ async function enregistrerAnnuaire() {
 }
 
 suggestionCompact.onclick = () => {
-  S.compactNiveau = Math.min(4, S.compactNiveau + 1);
+  S.compactNiveau = Math.min(6, S.compactNiveau + 1);
   onReglageChange();
   reconstruirePanneau();
 };

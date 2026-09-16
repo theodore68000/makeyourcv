@@ -521,13 +521,20 @@ const SCHEMAS = {
   },
   projets: {
     titre: "un projet",
+    modifiable: true,
     champs: [
       { cle: "titre", label: "Titre", requis: true, bilingue: true },
+      { cle: "lieu", label: "Lieu", bilingue: true },
+      { cle: "dates", label: "Dates (ex. 2025)", bilingue: true },
       { cle: "description", label: "Description", bilingue: true }
     ],
     texteId: v => v.titre.fr,
     construire: (v, id) => {
-      const p = { id, titre: valeurTexteBilingue(v.titre.fr, v.titre.en), puces: [] };
+      const p = {
+        id, titre: valeurTexteBilingue(v.titre.fr, v.titre.en),
+        lieu: valeurTexteBilingue(v.lieu.fr, v.lieu.en), dates: valeurTexteBilingue(v.dates.fr, v.dates.en),
+        puces: []
+      };
       const description = valeurTexteBilingue(v.description.fr, v.description.en);
       if (description) p.description = description;
       return p;
@@ -1052,7 +1059,7 @@ export function construirePanneau(panel, CV, S, onChange, onAnnuaireModifie) {
   const grCompact = document.createElement("div");
   grCompact.className = "groupe-reglage";
   const segCompact = creerBoutonsSegment(
-    [{ value: 1, label: "1" }, { value: 2, label: "2" }, { value: 3, label: "3" }, { value: 4, label: "4" }],
+    [1, 2, 3, 4, 5, 6].map(n => ({ value: n, label: String(n) })),
     () => S.compactNiveau, v => { S.compactNiveau = v; }, onChange
   );
   segCompact.querySelectorAll("button").forEach((b, i) => {

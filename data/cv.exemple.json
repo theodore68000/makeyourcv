@@ -61,6 +61,8 @@
         "fr": "Projet d'exemple",
         "en": "Example project"
       },
+      "lieu": "",
+      "dates": "2025",
       "description": {
         "fr": "Description d'exemple du projet réalisé",
         "en": "Example description of the completed project"

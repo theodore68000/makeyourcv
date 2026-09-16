@@ -94,7 +94,7 @@ export function renderSobre(CV, S) {
   function projets() {
     const items = pick(CV.projets, S.projets);
     if (!items.length) return [];
-    const cartes = items.map(p => sEntry(p.titre, "", null, null, p.description, pucesDe(p), "s-projet-desc"));
+    const cartes = items.map(p => sEntry(p.titre, p.lieu, null, p.dates, p.description, pucesDe(p), "s-projet-desc"));
     return decouperEnUnites(`<h2>${tx(LABELS.projets)}</h2>`, cartes);
   }
 
@@ -142,7 +142,7 @@ export function renderSobre(CV, S) {
     SOBRE[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
-      const cartes = items.map(it => sEntry(it.titre, "", null, null, it.description, pucesDe(it)));
+      const cartes = items.map(it => sEntry(it.titre, it.lieu, null, it.dates, it.description, pucesDe(it), "s-projet-desc"));
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, cartes);
     };
   }
@@ -178,6 +178,18 @@ export function renderVisuel(CV, S) {
   </div>`;
   }
 
+  // Ligne « lieu · dates » d'une carte projet (format compact, plus léger
+  // que la colonne dédiée de vEntry qui prendrait trop de place dans une
+  // grille à deux colonnes) — absente si aucun des deux n'est renseigné.
+  function vProjetMeta(item) {
+    const dates = tx(item.dates), lieu = tx(item.lieu);
+    if (!dates && !lieu) return "";
+    return `<div class="v-projet-meta">` +
+      `${dates ? `<span class="v-projet-dates">${dates}</span>` : ""}` +
+      `${lieu ? `<span class="v-projet-lieu">${lieu}</span>` : ""}` +
+      `</div>`;
+  }
+
   const VISUEL = {
     formation() {
       const items = pick(CV.formations, S.formation);
@@ -200,6 +212,7 @@ export function renderVisuel(CV, S) {
       const cartesHtml = items.map(p => {
         const puces = pucesDe(p);
         return `<div class="v-projet"><div class="v-projet-titre">${tx(p.titre)}</div>` +
+          `${vProjetMeta(p)}` +
           `${p.description ? `<p class="v-projet-desc">${tx(p.description)}</p>` : ""}` +
           `${puces.length ? `<ul class="v-puces">${puces.map(pc => `<li>${tx(pc)}</li>`).join("")}</ul>` : ""}</div>`;
       });
@@ -216,7 +229,8 @@ export function renderVisuel(CV, S) {
       const cartesHtml = items.map(it => {
         const puces = pucesDe(it);
         return `<div class="v-projet"><div class="v-projet-titre">${tx(it.titre)}</div>` +
-          `${it.description ? `<p>${tx(it.description)}</p>` : ""}` +
+          `${vProjetMeta(it)}` +
+          `${it.description ? `<p class="v-projet-desc">${tx(it.description)}</p>` : ""}` +
           `${puces.length ? `<ul class="v-puces">${puces.map(pc => `<li>${tx(pc)}</li>`).join("")}</ul>` : ""}</div>`;
       });
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, [`<div class="v-projets">${cartesHtml.join("")}</div>`]);
