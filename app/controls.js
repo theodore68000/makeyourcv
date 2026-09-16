@@ -279,7 +279,11 @@ function creerExtraPuces(S, item, onChange, onAnnuaireModifie) {
 // Lit, pour un champ de schéma donné, la valeur actuelle d'une entrée de
 // l'annuaire (chaîne pour un champ bilingue non encore traduit, objet
 // { fr, en } sinon) — utilisé pour préremplir le formulaire de modification.
+// `champ.lireDepuis`, s'il est fourni, remplace la lecture par défaut sous
+// `champ.cle` : sert pour langues/interets, dont le nom est stocké à même
+// l'entrée (fr/en), pas sous une clé dédiée (cf. SCHEMAS).
 function valeurDepuisEntree(entree, champ) {
+  if (champ.lireDepuis) return champ.lireDepuis(entree);
   const brut = entree[champ.cle];
   if (champ.bilingue) {
     if (brut && typeof brut === "object") return { fr: brut.fr || "", en: brut.en || "" };
@@ -543,6 +547,7 @@ const SCHEMAS = {
   },
   competences: {
     titre: "une compétence",
+    modifiable: true,
     champs: [
       { cle: "categorie", label: "Catégorie", requis: true, bilingue: true },
       { cle: "valeur", label: "Valeur", requis: true, bilingue: true }
@@ -555,8 +560,11 @@ const SCHEMAS = {
   },
   langues: {
     titre: "une langue",
+    modifiable: true,
     champs: [
-      { cle: "nom", label: "Langue", requis: true, bilingue: true },
+      // Le nom est stocké à même l'entrée (fr/en), pas sous "nom" : cf.
+      // `construire` ci-dessous et `lireDepuis` pour la préremplir en modification.
+      { cle: "nom", label: "Langue", requis: true, bilingue: true, lireDepuis: e => ({ fr: e.fr || "", en: e.en || "" }) },
       { cle: "niveau", label: "Niveau (ex. B2)", requis: true, bilingue: true }
     ],
     texteId: v => v.nom.fr,
@@ -567,8 +575,11 @@ const SCHEMAS = {
   },
   interets: {
     titre: "un centre d’intérêt",
+    modifiable: true,
     champs: [
-      { cle: "texte", label: "Centre d’intérêt", requis: true, bilingue: true },
+      // Même remarque que pour les langues : le texte est stocké à même
+      // l'entrée (fr/en), pas sous "texte".
+      { cle: "texte", label: "Centre d’intérêt", requis: true, bilingue: true, lireDepuis: e => ({ fr: e.fr || "", en: e.en || "" }) },
       { cle: "detail", label: "Détail (optionnel, affiché après « : »)", bilingue: true }
     ],
     texteId: v => v.texte.fr,

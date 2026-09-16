@@ -220,7 +220,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .sobre ul { margin: 0; padding-left: 17pt; list-style: square; }
 .sobre li::marker { font-size: .8em; }
 .sobre .s-projets li { margin-bottom: 2pt; }
-.sobre .s-projet-desc { font-style: italic; }
 .sobre .s-lignes p { margin-bottom: 2pt; }
 
 /* ============================================================

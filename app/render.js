@@ -79,22 +79,22 @@ export function renderSobre(CV, S) {
   const { tx, colon, pick, titreAffiche, enLigne, pucesDe, contacts, lien } = creerOutils(CV, S);
   const I = CV.identite, titre = titreAffiche();
 
-  function sEntry(titre, lieu, sous, dates, desc, puces, descClasse = "") {
+  function sEntry(titre, lieu, sous, dates, desc, puces) {
     return `<div class="s-entry">
     <div class="s-row"><b>${tx(titre)}</b><span>${tx(lieu)}</span></div>
     ${sous || dates ? `<div class="s-row"><i>${tx(sous)}</i><i>${tx(dates)}</i></div>` : ""}
-    ${desc ? `<p${descClasse ? ` class="${descClasse}"` : ""}>${tx(desc)}</p>` : ""}
+    ${desc ? `<p>${tx(desc)}</p>` : ""}
     ${puces.length ? `<ul>${puces.map(p => `<li>${tx(p)}</li>`).join("")}</ul>` : ""}
   </div>`;
   }
 
-  // Chaque projet devient une « carte » comme une formation : titre du projet
-  // en gras seul sur sa ligne, puis sa description (à écrire comme une phrase
-  // sur les compétences développées) en dessous.
+  // Chaque projet devient une « carte » comme une formation : la description
+  // tient le rôle du sous-titre (diplôme/poste), sur la même ligne que la
+  // date — comme Formation/Expériences, sans ligne à part pour la date.
   function projets() {
     const items = pick(CV.projets, S.projets);
     if (!items.length) return [];
-    const cartes = items.map(p => sEntry(p.titre, p.lieu, null, p.dates, p.description, pucesDe(p), "s-projet-desc"));
+    const cartes = items.map(p => sEntry(p.titre, p.lieu, p.description, p.dates, null, pucesDe(p)));
     return decouperEnUnites(`<h2>${tx(LABELS.projets)}</h2>`, cartes);
   }
 
@@ -142,7 +142,7 @@ export function renderSobre(CV, S) {
     SOBRE[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
-      const cartes = items.map(it => sEntry(it.titre, it.lieu, null, it.dates, it.description, pucesDe(it), "s-projet-desc"));
+      const cartes = items.map(it => sEntry(it.titre, it.lieu, it.description, it.dates, null, pucesDe(it)));
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, cartes);
     };
   }
