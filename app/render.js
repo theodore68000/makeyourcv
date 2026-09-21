@@ -137,11 +137,17 @@ export function renderSobre(CV, S) {
       return decouperEnUnites(`<h2>${tx(LABELS.interets)}</h2>`, [contenu]);
     }
   };
-  // Sections personnalisées : même format « carte » que les projets.
+  // Sections personnalisées : deux formats possibles (section.format) —
+  // « carte » (titre/sous-titre/puces, comme Projets) ou « liste »
+  // (catégorie : valeur sur une ligne, comme Compétences).
   for (const section of CV.sectionsPersonnalisees || []) {
     SOBRE[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
+      if (section.format === "liste") {
+        const lignes = items.map(it => `<p><b>${tx(it.categorie)}${colon()}</b> ${tx(it.valeur)}</p>`);
+        return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, [`<div class="s-lignes">${lignes.join("")}</div>`]);
+      }
       const cartes = items.map(it => sEntry(it.titre, it.lieu, it.description, it.dates, null, pucesDe(it)));
       return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, cartes);
     };
@@ -220,12 +226,17 @@ export function renderVisuel(CV, S) {
     }
     /* compétences, langues et centres d’intérêt vont dans la colonne latérale */
   };
-  // Sections personnalisées : même format « carte » que les projets (même
-  // remarque sur la grille à deux colonnes, insécable).
+  // Sections personnalisées : même distinction de format qu'en sobre (voir
+  // ci-dessus) — « carte » reprend la grille à deux colonnes des projets
+  // (insécable), « liste » une ligne catégorie : valeur par élément.
   for (const section of CV.sectionsPersonnalisees || []) {
     VISUEL[section.id] = () => {
       const items = pick(section.items, S[section.id]);
       if (!items.length) return [];
+      if (section.format === "liste") {
+        const lignes = items.map(it => `<p><b>${tx(it.categorie)}${colon()}</b> ${tx(it.valeur)}</p>`);
+        return decouperEnUnites(`<h2>${tx(section.titre)}</h2>`, [`<div class="v-lignes">${lignes.join("")}</div>`]);
+      }
       const cartesHtml = items.map(it => {
         const puces = pucesDe(it);
         return `<div class="v-projet"><div class="v-projet-titre">${tx(it.titre)}</div>` +

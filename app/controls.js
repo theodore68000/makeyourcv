@@ -51,6 +51,22 @@ function creerBoutonsSegment(options, valeurCourante, definir, onChange) {
   return seg;
 }
 
+// Groupe de boutons radio (ex. format d'une section personnalisée). Simple
+// groupe HTML natif : la valeur se relit via `new FormData(form).get(nom)`.
+function creerRadios(nom, options, valeurParDefaut) {
+  const conteneur = document.createElement("div");
+  conteneur.className = "groupe-radios";
+  for (const { value, label } of options) {
+    const ligne = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "radio"; input.name = nom; input.value = value;
+    input.checked = value === valeurParDefaut;
+    ligne.append(input, " " + label);
+    conteneur.appendChild(ligne);
+  }
+  return conteneur;
+}
+
 function creerSection(titre, contenu, ouvert = true) {
   const details = document.createElement("details");
   details.className = "panneau-section";
@@ -1015,16 +1031,26 @@ function creerSectionSections(S, CV, onChange, onAnnuaireModifie, onSectionsChan
     champFr.type = "text"; champFr.placeholder = "Nom de la nouvelle section (français)"; champFr.required = true;
     const champEn = document.createElement("input");
     champEn.type = "text"; champEn.placeholder = "Anglais (optionnel)";
+    const groupeFormat = document.createElement("div");
+    groupeFormat.className = "groupe-format-section";
+    groupeFormat.append(
+      creerLibelleGroupe("Format des éléments"),
+      creerRadios("format-nouvelle-section", [
+        { value: "carte", label: "Titre, sous-titre, puces (comme Formation)" },
+        { value: "liste", label: "Catégorie : valeur (comme Compétences)" }
+      ], "carte")
+    );
     const boutonAjouter = document.createElement("button");
     boutonAjouter.type = "submit"; boutonAjouter.textContent = "+ Ajouter une section";
-    form.append(champFr, champEn, boutonAjouter);
+    form.append(champFr, champEn, groupeFormat, boutonAjouter);
     form.onsubmit = evt => {
       evt.preventDefault();
       const fr = champFr.value.trim();
       if (!fr) return;
       const en = champEn.value.trim();
+      const format = new FormData(form).get("format-nouvelle-section") || "carte";
       const id = genererId(CV.sectionsPersonnalisees, fr, "section");
-      CV.sectionsPersonnalisees.push({ id, titre: en ? { fr, en } : fr, items: [] });
+      CV.sectionsPersonnalisees.push({ id, titre: en ? { fr, en } : fr, format, items: [] });
       S.sections = [...(S.sections || []), id];
       S[id] = [];
       onAnnuaireModifie();
@@ -1105,9 +1131,13 @@ export function construirePanneau(panel, CV, S, onChange, onAnnuaireModifie) {
     creerSectionSections(S, CV, onChange, onAnnuaireModifie, rafraichirPanneauEntier, hooksSections)));
 
   for (const section of CV.sectionsPersonnalisees || []) {
+    const estListe = section.format === "liste";
+    const schemaSection = estListe
+      ? { ...SCHEMAS.competences, titre: "un élément" }
+      : { ...SCHEMAS.projets, titre: "un élément" };
     panel.appendChild(creerSection(T(section.titre), creerSectionEditable(
-      S, section.id, section.items, { ...SCHEMAS.projets, titre: "un élément" }, onChange, onAnnuaireModifie,
-      item => creerExtraPuces(S, item, onChange, onAnnuaireModifie)
+      S, section.id, section.items, schemaSection, onChange, onAnnuaireModifie,
+      estListe ? null : item => creerExtraPuces(S, item, onChange, onAnnuaireModifie)
     )));
   }
 
