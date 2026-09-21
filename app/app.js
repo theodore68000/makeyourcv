@@ -267,7 +267,9 @@ async function initEdition() {
     // pour retrouver l'écran tel qu'il a été laissé la dernière fois.
     try {
       const derniere = await api.derniereSelection();
-      if (derniere) selectionBrute = derniere;
+      // Si elle ne correspond plus à l'annuaire (autre annuaire, dépôt cloné...),
+      // on l'écarte en silence : on repart de la sélection « tout coché ».
+      if (derniere && reconcilierSelection(CV, derniere).manquants.length === 0) selectionBrute = derniere;
     } catch { /* pas grave : on repart de la sélection « tout coché » */ }
   }
 

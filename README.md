@@ -32,7 +32,7 @@ cd makeyourcv
 python server.py
 ```
 
-Ouvrez ensuite `http://localhost:8000` dans votre navigateur.
+Ouvrez ensuite `http://localhost:7500` dans votre navigateur.
 
 Au premier lancement, un CV de départ est créé pour vous, avec un exemple fictif par section pour montrer le format attendu. Allez dans l'éditeur, remplacez ces exemples par vos informations.
 
